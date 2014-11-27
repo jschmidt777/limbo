@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 <a href="admin.php">&nbsp;Back&nbsp;</a>
+<br>
+<br>
 <head>
 <!--Not using jquery yet but I might. At the least this will be replaced with a reference to a css library.
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
@@ -18,7 +20,7 @@ session_start();
 $email = $_SESSION['email'];
 
 
-
+$page = 'admin-2.php';
 show_admin_record($dbc, $email) ;
 $query = "SELECT * FROM users WHERE email ='".$email."'" ;
 		 $results = mysqli_query( $dbc , $query ) ;
@@ -37,7 +39,7 @@ $query = "SELECT * FROM users WHERE email ='".$email."'" ;
 	#Fix this so it works (updating and deleting still works, I just want this to be implemented as well).
 		$display = true;
 		if (!isset($_POST['submit'])){
-		?>
+		?>  <br>
 			<form action="admin-2.php" method="POST">
 				<h3>Update Account</h3>
 				<br>
@@ -83,7 +85,7 @@ $query = "SELECT * FROM users WHERE email ='".$email."'" ;
 				update_user($dbc, $user, $first_name, $last_name, $email, $pass);
 				echo 'Updated Your Account';
 				$_SESSION['email'] = $email;
-				show_admin_record($dbc, $email);
+				show_admin_record($dbc, $email, $page);
 				}else if (valid_string($first_name)== false){
 				  echo '<p style="color:red;font-size:16px;">An error !!! Enter a valid First Name.</p>';
 				}else if (valid_string($last_name) == false){

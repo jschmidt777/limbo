@@ -94,6 +94,7 @@ function show_record($dbc, $description, $page) {
 }
 
 function show_admin_record($dbc, $email){
+	$email = str_replace('_',' ',$email);
 	$query = "SELECT * FROM users WHERE email = '".$email."'" ;
 	
 	# Execute the query
@@ -103,7 +104,47 @@ function show_admin_record($dbc, $email){
 	#$row = mysqli_fetch_array($results, MYSQLI_ASSOC) ;
 	
 	if ($results){
-		echo "<H3>User ".$email. "</H3>" ;
+		echo "<H3>User: ".$email."</H3>" ;
+		  echo '<TABLE BORDER="1">';
+		  echo '<TR>';
+		  echo '<TH>Id</TH>';
+		  echo '<TH>First name</TH>';
+		  echo '<TH>Last Name</TH>';
+		  echo '<TH>Email</TH>';
+		  echo '<TH>Reg Date</TH>';
+		  echo '</TR>';
+	
+	while ( $row = mysqli_fetch_array($results, MYSQLI_ASSOC) )
+  		{
+    		echo '<TR>' ;
+    		echo '<TD>' . $row['user_id'] . '</TD>' ;
+			echo '<TD>' . $row['first_name'] . '</TD>' ;
+			echo '<TD>' . $row['last_name'] . '</TD>' ;
+			echo '<TD>' . $row['email'] . '</TD>' ;
+			echo '<TD>' . $row['reg_date'] . '</TD>' ;
+    		echo '</TR>' ;
+  		}
+		
+	# End the table
+  		echo '</TABLE>';
+
+  		# Free up the results in memory
+  		mysqli_free_result( $results ) ;
+	
+	}
+}
+
+function show_delete_admin_record($dbc, $id){
+	$query = "SELECT * FROM users WHERE user_id ='".$id."'" ;
+	
+	# Execute the query
+	$results = mysqli_query( $dbc , $query ) ;
+	check_results($results) ;
+	
+	#$row = mysqli_fetch_array($results, MYSQLI_ASSOC) ;
+	
+	if ($results){
+		echo "<H3>User: ".$id."</H3>" ;
 		  echo '<TABLE BORDER="1">';
 		  echo '<TR>';
 		  echo '<TH>Id</TH>';
@@ -186,6 +227,63 @@ function show_link_records($dbc, $number, $page) {
     		echo '</TR>' ;
 		  }
 		}
+		mysqli_free_result( $results ) ;
+	}
+}
+
+function show_link_admins($dbc, $number, $email) {
+#$query = 'SELECT * FROM users WHERE NOT IN ( SELECT * FROM users WHERE email="'.$email.'") ORDER BY user_id ASC LIMIT '.$number.'' ;
+	if ($number != 0 ){
+		$query = 'SELECT * FROM users ORDER BY user_id ASC LIMIT '.$number.'' ;
+	}else if ($number == 0 ){
+		$query = 'SELECT * FROM users' ;
+	}
+	# Execute the query
+	$results = mysqli_query( $dbc , $query ) ;
+	check_results($results) ;
+
+	# Show results
+	if( $results )
+	{
+  		# But...wait until we know the query succeed before
+  		# rendering the table start.
+		  echo '<TABLE BORDER="1">';
+		  echo '<TR>';
+		  echo '<TH>Id</TH>';
+		  echo '<TH>First name</TH>';
+		  echo '<TH>Last Name</TH>';
+		  echo '<TH>Email</TH>';
+		  echo '<TH>Reg Date</TH>';
+		  echo '</TR>';
+		  
+		  
+
+  		# For each row result, generate a table row
+  		while ( $row = mysqli_fetch_array( $results , MYSQLI_ASSOC ))
+  		{
+		  if( $email != $row['email'] ){
+			$rec = $row['user_id'];
+			$alink = '<A HREF=admin-3.php?user_id=' . $rec. '>' . $rec. '</A>' ;
+    		echo '<TR>' ;
+    		echo '<TD>' . $alink . '</TD>' ;
+			echo '<TD>' . $row['first_name'] . '</TD>' ;
+			echo '<TD>' . $row['last_name'] . '</TD>' ;
+			echo '<TD>' . $row['email'] . '</TD>' ;
+			echo '<TD>' . $row['reg_date'] . '</TD>' ;
+    		echo '</TR>' ;
+		  }else{
+			echo '<TR>' ;
+    		echo '<TD>' . $row['user_id'] . '</TD>' ;
+			echo '<TD>' . $row['first_name'] . '</TD>' ;
+			echo '<TD>' . $row['last_name'] . '</TD>' ;
+			echo '<TD>' . $row['email'] . '</TD>' ;
+			echo '<TD>' . $row['reg_date'] . '</TD>' ;
+    		echo '</TR>' ;
+				
+		  }
+		
+		}
+		mysqli_free_result( $results ) ;
 	}
 }
 
@@ -241,7 +339,7 @@ function search_records($dbc, $description) {
 	}
 }
 
-#May just be able to delete this. Idk, I'll have to check.
+
 function load_insert_new_item( $page, $description )
 {
   # Begin URL with protocol, domain, and current directory.
@@ -326,6 +424,20 @@ function delete_item($dbc, $id){
 	
 }
 
+function delete_admin($dbc, $id){
+	$query = "DELETE FROM users WHERE user_id = '".$id."'";
+	show_query($query);
+	# Execute the query
+	$results = mysqli_query( $dbc , $query ) ;
+	check_results($results) ;
+	
+	return $results;
+	# Free up the results in memory
+  	# mysqli_free_result( $results ) ;
+	
+}
+
+
 # Inserts a record into the presidents table
 #two of these for finders and owners
 function insert_found_record($dbc, $description, $location_name, $finder, $room) {
@@ -340,6 +452,16 @@ function insert_found_record($dbc, $description, $location_name, $finder, $room)
 
 function insert_lost_record($dbc, $description, $location_name, $owner, $room) {
   $query = 'INSERT INTO stuff(description, location_name, owner, room, create_date, status) VALUES ("' . $description. '" , "' . $location_name . '", "' . $owner . '", "' . $room . '" , NOW(), "lost")' ;
+  show_query($query);
+
+  $results = mysqli_query($dbc,$query) ;
+  check_results($results) ;
+
+  return $results ;
+}
+
+function insert_user_record($dbc, $fname, $lname, $email, $pass) {
+  $query = 'INSERT INTO users(first_name, last_name, email, pass, reg_date) VALUES ("' . $fname. '" , "' . $lname . '", "' . $email . '", "' . $pass. '" , NOW())' ;
   show_query($query);
 
   $results = mysqli_query($dbc,$query) ;

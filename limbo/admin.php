@@ -7,7 +7,7 @@
 <form action="admin.php" method="POST">
 <h1>Welcome Admin- <?php session_start(); echo 'user: '.$_SESSION['email'].''; //this doesn't work when I go in through easyphp so that could be a fix later.?>  </h1>
 <h3>See the report of items below, modify the items by clicking on one, or choose what you want to do from the tool bar.</h3>
-<table border="1"><th><a href="admin-1.php">&nbsp;Help&nbsp;</a></th><th><a href="admin-2.php">&nbsp;Manage Account&nbsp;</a></th><th><a href="admin-3.php">&nbsp;Manage Users&nbsp;</a></th></table>
+<table border="1"><th><a href="admin-1.php">&nbsp;Help&nbsp;</a></th><th><a href="admin-2.php">&nbsp;Manage Account&nbsp;</a></th><th><a href="admin-3.php">&nbsp;Delete Users&nbsp;</a></th><th><a href="admin-4.php">&nbsp;Add Users&nbsp;</a></th></table>
 <h2 style="display:inline-block"> Report for the last:</h2> 
 <select name="timeoption" style="display:inline-block">
   <option name="7 days" value="7 days" >7 days</option>
@@ -65,6 +65,7 @@ if ( $_SERVER[ 'REQUEST_METHOD' ] == 'POST') {
 		show_link_records($dbc, $daysback, $page);
 	   
 	}
+	#This should be id instead, just in case there is an item with the exact same description.
 }else if ( $_SERVER[ 'REQUEST_METHOD' ] == 'GET') {
 	  if(isset($_GET['description'])){
 		$descrip = $_GET['description'];
