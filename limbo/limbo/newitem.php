@@ -1,10 +1,5 @@
 <!--
 This PHP script was modified based on result.php in McGrath (2012).
-It demonstrates how to ...
-  1) Connect to MySQL.
-  2) Write a complex query.
-  3) Format the results into an HTML table.
-  4) Update MySQL with form input.
 By Joseph Schmidt and Nick Titolo
 -->
 <!DOCTYPE html>
@@ -15,12 +10,12 @@ By Joseph Schmidt and Nick Titolo
 <link rel="stylesheet" href="css/background.css" />
 </head>
 <div class="row">
-    <div class="large-6 medium-6 columns">
+    <div class="large-5 medium-6 columns">
 		<h1> New Item </h1>
 	</div>
-<div class="large-6 medium-6 columns">
+<div class="large-7 medium-6 columns">
 	<div class="callout panel">
-		<a href="limbo.php">Home&nbsp;</a>
+		<a href="limbo.php" class="small button">Home&nbsp;</a>
 		</div>
 	</div>
 </div>
@@ -35,6 +30,7 @@ require( 'includes/connectlimbo_db.php' ) ;
 # Includes these helper functions
 require( 'includes/limbohelpers.php' ) ;
 
+$page = 'newitem.php';
 #Confirms the submission of fields and brings up an error if they are incorrect
 if ($_SERVER[ 'REQUEST_METHOD' ] == 'POST') {
 	$description = $_POST['description'] ;
@@ -45,11 +41,8 @@ if ($_SERVER[ 'REQUEST_METHOD' ] == 'POST') {
 	
 	$room = $_POST['room'] ;
 
-    if(!empty($description) && !empty($location_name) && !empty($ownername)) {
-      $result = insert_found_record($dbc, $description, $location_name, $ownername, $room) ;
-	  #show the item that was put in 
-	  #clear form inputs after they submit
-      echo "<p>Added " . $result . " new item ". $description . ". Thank you.</p>" ;
+    if(!empty($description) && !empty($location_name) && !empty($ownername)) { 
+      $result = check_location($dbc, $description, $location_name, $ownername, $room, $page);
 	}else if (valid_string($description)== false && valid_string($location_name) == false && valid_string($ownername) == false ){
 	  echo '<p style="color:red">Please input a description, location name, your name and a room (optional)!</p>' ;  
     }else if (valid_string($description)== false){
@@ -72,8 +65,7 @@ mysqli_close( $dbc ) ;
 <td>Description:</td><td><input type="text" name="description" value="<?php session_start(); echo ''.$_SESSION['description'].' '; ?> "> (Please be as descriptive as possible.)</td>
 </tr>
 <tr>
-<!-- Check location based on database. -->
-<td>Location Name:</td><td><input type="text" name="location" value="<?php if (isset($_POST['location_name'])) echo $_POST['location_name']; ?>"> (Please be as descriptive as possible.)</td>
+<td>Location Name:</td><td><input type="text" name="location" value="<?php if (isset($_POST['location'])) echo $_POST['location']; ?>"> (Please be as descriptive as possible.)</td>
 </tr>
 <tr>
 <td>Your Name:</td><td><input type="text" name="owner" value="<?php if (isset($_POST['owner'])) echo $_POST['owner']; ?>"></td>
@@ -82,13 +74,13 @@ mysqli_close( $dbc ) ;
 <td>*Room:</td><td><input type="text" name="room" value="<?php if (isset($_POST['room'])) echo $_POST['room']; ?>"></td>
 </tr>
 </table>
-<p><input type="submit" name="add" value="Add"></p>
-<p>*Optional field</p>
+<p><input type="submit" name="add" value="Add" class="small round button"></p>
+<p >*Optional field</p>
 </form>
 <br>
 <br>
 <br>
-<p> Please note that you will have to check the site every couple of days to see if your item was found. </p>	
+<p style="color:red;font-size:16px;"> Please note that you will have to check the site every couple of days to see if your item was found. </p>	
 		</div>
 	</div>
 </div>

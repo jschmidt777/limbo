@@ -6,12 +6,12 @@
 <link rel="stylesheet" href="css/background.css"/>
 </head>
 <div class="row">
-    <div class="large-6 medium-6 columns">
+    <div class="large-5 medium-6 columns">
 <h1> Claim </h1>
 	</div>
-<div class="large-6 medium-6 columns">
+<div class="large-7 medium-6 columns">
 	<div class="callout panel">
-		<a href="ql.php">&nbsp;Back&nbsp;</a>
+		<a href="ql.php" class="small button">&nbsp;Back&nbsp;</a>
 		</div>
 	</div>
 </div>
@@ -51,7 +51,7 @@ $query = "SELECT * FROM stuff WHERE description ='".$description."'" ;
 				<td>Your Name:</td><td><input type="text" name="owner" value=""></td>
 				</tr>
 				</table>
-				<p><input type="submit" name="submit" value="Submit" ></p>
+				<p><input type="submit" name="submit" value="Submit" class="small round button"></p>
 			  </form>
 		<?php
 		}else if (isset($_POST['submit']) && empty($_POST['owner'])){
@@ -64,7 +64,7 @@ $query = "SELECT * FROM stuff WHERE description ='".$description."'" ;
 				<td>Your Name:</td><td><input type="text" name="owner" value=""></td>
 				</tr>
 				</table>
-				<p><input type="submit" name="submit" value="Submit" ></p>
+				<p><input type="submit" name="submit" value="Submit" class="small round button" ></p>
 			  </form>
 		<?php
 		}

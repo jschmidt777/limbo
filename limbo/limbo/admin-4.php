@@ -10,12 +10,12 @@ By Joseph Schmidt and Nick Titolo
 <link rel="stylesheet" href="css/background.css" />
 </head>
 <div class="row">
-    <div class="large-6 medium-6 columns">
+    <div class="large-10 medium-6 columns">
 		<h1> New User </h1>
 	</div>
-<div class="large-6 medium-6 columns">
+<div class="large-2 medium-6 columns">
 		<div class="callout panel">	
-			<a href="admin.php">&nbsp;Back&nbsp;</a>
+			<a href="admin.php" class="small button">&nbsp;Back&nbsp;</a>
 		</div>
 	</div>
 </div>
@@ -44,16 +44,16 @@ if ($_SERVER[ 'REQUEST_METHOD' ] == 'POST') {
 	
 	$confirmpass = $_POST['confirmpass'];
 
-    if(!empty($fname) && !empty($lname) && !empty($email) && !empty($pass) && !empty($confirmpass) && strlen($pass) < 6 && $pass != $confirmpass ){
-      $result = insert_user_record($dbc, $fname, $lname, $email, $pass) ;
-	  #show the user that was put in 
-      echo "<p>Added " . $result . " new user: ". $fname . ". Thank you.</p>" ;
-	}else if (valid_string($fname)== false || valid_string($lname) == false || valid_string($email) == false || valid_string($pass) == false || valid_string($confirmpass) == false){
+    if (valid_string($fname)== false || valid_string($lname) == false || valid_string($email) == false || valid_string($pass) == false || valid_string($confirmpass) == false){
 	  echo '<p style="color:red">Please input all fields!</p>' ;  
 	}else if (strlen($pass) < 6){
 	  echo '<p style="color:red;font-size:16px;">An error !!! Password must be at least six characters.</p>';
 	}else if ($pass != $confirmpass){
 	  echo '<p style="color:red;font-size:16px;">An error !!! Passwords do not match.</p>';
+	}else if(!empty($fname) && !empty($lname) && !empty($email) && !empty($pass) && !empty($confirmpass)){
+      $result = insert_user_record($dbc, $fname, $lname, $email, $pass) ;
+	  #show the user that was put in 
+      echo "<p>Added " . $result . " new user: ". $fname . ". Thank you.</p>" ;
 	}
   }
 }
@@ -85,8 +85,8 @@ mysqli_close( $dbc ) ;
 <td>Confirm Password:</td><td><input type="password" name="confirmpass" value=""></td>
 </tr>
 </table>
-<p><input type="submit" name="add" value="Add" ></p>
-<p>*We require that this is at least 6 characters in length. Further make sure it is not too complex (so you can remember it).</p>
+<p><input type="submit" name="add" value="Add" class="small round button" ></p>
+<p>*We require that this is at least 6 characters in length. Further, make sure it is not too complex (so you can remember it).</p>
 </form>
 		</div>
 	</div>

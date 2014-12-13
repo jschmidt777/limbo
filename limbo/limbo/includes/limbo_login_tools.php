@@ -6,7 +6,6 @@ Who	Date		Comment
 RC	 7-Nov-13	Created.
 JS   12/04/14	Modified
 -->
-<!--Puts in the background and other css-->
 <?php
 # Includes these helper functions
 require( 'includes/limbohelpers.php' ) ;
@@ -46,7 +45,7 @@ function loadpage( $page, $description )
   exit() ;
 }
 
-# Validates the president name.
+# Validates the admin.
 # Returns -1 if validate fails, and >= 0 if it succeeds
 # which is the primary key id.
 function validate($email, $pw = '')

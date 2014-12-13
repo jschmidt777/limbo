@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
-<!-- This page just confirms the admins deletion of a user-->
-
+<!-- This page just confirms the admin's deletion of another admin-->
 <head>
 <!--Puts in the background and other css-->
 <link href="cssfoundation/foundation.css" rel="stylesheet" type="text/css"/>
@@ -15,12 +14,12 @@ require( 'includes/connectlimbo_db.php' ) ;
 require( 'includes/limbohelpers.php' ) ;
 	session_start(); $user = $_SESSION['user_id']; delete_admin($dbc, $user); ?>
 <div class="row">
-    <div class="large-6 medium-6 columns">
+    <div class="large-10 medium-6 columns">
 	<h1>Deleted User <?php echo''.$user.'';?></h1>
 	</div>
-<div class="large-6 medium-6 columns">
+<div class="large-2 medium-6 columns">
 		<div class="callout panel">	
-			<a href="admin-3.php">&nbsp;Back&nbsp;</a>
+			<a href="admin-3.php" class="small button">&nbsp;Back&nbsp;</a>
 		</div>
 	</div>
 </div>

@@ -2,18 +2,18 @@
 <html>
 <!-- Admin welcome page that also shows that they are logged in. -->
 <!-- CSS to come later. Functionality now. --> 
-
+<!--Authored by Joseph Schmidt and Nick Titolo-->
 <head>
 <link href="cssfoundation/foundation.css" rel="stylesheet" type="text/css"/>
 <link rel="stylesheet" href="css/background.css" />
 </head>
 <div class="row">
-      <div class="large-6 medium-6 columns">
+      <div class="large-10 medium-6 columns">
 <h1>Welcome Admin- <?php session_start(); echo 'user: '.$_SESSION['email'].'';?>  </h1>
 	  </div>
-<div class="large-6 medium-6 columns">
+<div class="large-2 medium-6 columns">
 	  <div class="callout panel">
-<a href="logout.php">&nbsp;Logout&nbsp;</a>
+<a href="logout.php" class="small button">&nbsp;Logout&nbsp;</a>
 	  </div>
 	</div>
   </div>
@@ -22,16 +22,26 @@
       <div class="large-12 columns">
       	<div class="panel">
 <h3>See the report of items below, modify the items by clicking on one, or choose what you want to do from the tool bar.</h3>
-<table border="1"><th><a href="admin-1.php">&nbsp;Help&nbsp;</a></th><th><a href="admin-2.php">&nbsp;Manage Account&nbsp;</a></th><th><a href="admin-3.php">&nbsp;Delete Users&nbsp;</a></th><th><a href="admin-4.php">&nbsp;Add Users&nbsp;</a></th></table>
+<table border="1"><th><a href="admin-1.php">&nbsp;Help&nbsp;</a></th>
+				  <th><a href="admin-2.php">&nbsp;Manage Account&nbsp;</a></th>
+				  <th><a href="admin-3.php">&nbsp;Delete Users&nbsp;</a></th>
+				  <th><a href="admin-4.php">&nbsp;Add Users&nbsp;</a></th></table>
+<div class="row">
+	<div class="medium-5 columns">
 <h2 style="display:inline-block"> Report for the last:</h2> 
+	</div>
+	<div class="medium-4 medium-pull-1 columns">
 <select name="timeoption" style="display:inline-block">
   <option name="7 days" value="7 days" >7 days</option>
   <option name="30 days" value="30 days" >30 days</option>
   <option name="6 months" value="6 months" >6 months</option>
-  <!--Change all time to last 50 items lost/found-->
   <option name="All time" value="All time" >All time</option>
 </select>
-<p style="display:inline-block" ><input type="submit"></p>
+	</div>
+	<div class="medium-3 medium-pull-1 columns">
+<p style="display:inline-block" ><input type="submit" class="small round button"></p>
+	</div>
+</div>
 <?php
 #Make it so that they don't have to log in again.
 # Connect to MySQL server and the database
@@ -104,5 +114,4 @@ mysqli_close( $dbc ) ;
 	</div>
 </div>
 </form>		
-
 </html>

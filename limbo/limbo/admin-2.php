@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<!-- Allows admin to update account-->
+<!-- Allows admin to update their account-->
 <head>
 <!--Puts in the background and other css-->
 <link href="cssfoundation/foundation.css" rel="stylesheet" type="text/css"/>
@@ -18,7 +18,7 @@ $email = $_SESSION['email'];
 #Get the admin's information
 $page = 'admin-2.php';
 echo' <div class="row">
-		<div class="large-6 medium-6 columns">';
+		<div class="large-10 medium-6 columns">';
 			show_admin_record($dbc, $email) ;
 echo'   </div>';
 $query = "SELECT * FROM users WHERE email ='".$email."'" ;
@@ -33,12 +33,11 @@ $query = "SELECT * FROM users WHERE email ='".$email."'" ;
 			 $pass = $row['pass'] ;	
 			 $user = $row['user_id'];
 			}
-
-	#see claim to fix this
+			
 		if (!isset($_POST['submit'])){
-		?>  <div class="large-6 medium-6 columns">
+		?>  <div class="large-2 medium-6 columns">
 					<div class="callout panel">
-						<a href="admin.php">&nbsp;Back&nbsp;</a>
+						<a href="admin.php" class="small button">&nbsp;Back&nbsp;</a>
 					</div>
 				</div>
 			</div>
@@ -59,7 +58,7 @@ $query = "SELECT * FROM users WHERE email ='".$email."'" ;
 				 $newpass = $_POST['newpass'] ;
 			
 			if (isset($_POST['update'])){
-				if(!empty($first_name) && !empty($last_name) && !empty($email) && !empty($pass) && $pass == $newpass){
+				if(!empty($first_name) && !empty($last_name) && !empty($email) && !empty($pass) && $pass == $newpass && strlen($pass) >= 6){
 				update_user($dbc, $user, $first_name, $last_name, $email, $pass);
 				echo '<div class="row">
 							<div class="large-6 medium-6 columns">
@@ -80,6 +79,8 @@ $query = "SELECT * FROM users WHERE email ='".$email."'" ;
 				  echo '<p style="color:red;font-size:16px;">An error !!! Enter a valid password.</p>';
 				}else if ($pass != $newpass ){
 				  echo '<p style="color:red;font-size:16px;">An error !!! Confirm new password.</p>';
+				}else if (strlen($pass) < 6 ){
+				  echo '<p style="color:red;font-size:16px;">An error !!! Password not a sufficient length (must be at least six characters long).</p>';
 				}else {
 				echo '<p style="color:red;font-size:16px;">An error !!! All Fields Required.</p>';
 				}
@@ -88,6 +89,7 @@ $query = "SELECT * FROM users WHERE email ='".$email."'" ;
 				
 		  ?>	<br>
 				<table>
+					<!--Fields they can update-->
 				<tr>
 				<td>First Name:</td><td><input type="text" name="first_name" value="<?php echo''.$first_name.''?>" placeholder= "<?php echo ''.$first_name.'' ?>"></td>
 				</tr>
@@ -106,7 +108,7 @@ $query = "SELECT * FROM users WHERE email ='".$email."'" ;
             </td>
 				</tr>
 				</table>
-				<p><input type="submit" name="update" value="Update" ></p>
+				<p><input type="submit" name="update" value="Update" class="small round button"></p>
 				<p style="color:red;font-size:16px;">*If changed, confirm new password in "Confirm Updated Password" box.</p>
 		<?php
 		}else{

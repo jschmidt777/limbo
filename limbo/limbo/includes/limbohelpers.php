@@ -330,14 +330,15 @@ function search_records($dbc, $description) {
 	
   		# End the table
   		echo '</TABLE>';
-		echo "<p> *Items are found based on your description (i.e.'".$description."'). Click on a link to get more information about a specific item.</p>" ;
+		echo "<p> *Items are found based on your description (i.e.'".$description."'). Click on a link to get more information about a specific item.</p>
+			  <p> Click <a href='gotonewitem.php'> here </a> if your item did not show up so you can enter your item in the database. </p>" ;
 	
 
   		# Free up the results in memory
   		mysqli_free_result( $results ) ;
 	
 	}else if ($rowcount == 0){
-	load_insert_new_item('newitem.php', $description);
+		load_insert_new_item('newitem.php', $description);
 	}
 }
 
@@ -353,12 +354,41 @@ function load_insert_new_item( $page, $description )
 
   # Execute redirect then quit.
   session_start( );
-  
-  $_SESSION['description'] = $description;
 
+  $_SESSION['description'] = $description;
+  
   header( "Location: $url" ) ;
 
   exit() ;
+}
+
+#Checks the location based on what the user enters, and makes the location equal to the result. On newitem.php and finder.php. Update.php has it's own method for this on that page.
+function check_location($dbc, $description, $location, $person, $room, $page){
+	if(strlen($location) >= 5){
+	$query = "SELECT name FROM locations WHERE name LIKE'%".$location."%' LIMIT 1";
+	# Execute the query
+	$results = mysqli_query( $dbc , $query ) ;
+	check_results($results) ;
+	$rowcount = mysqli_num_rows($results);
+
+		if($results && $rowcount == 1 && $page == 'newitem.php'){
+			$row = mysqli_fetch_array( $results , MYSQLI_ASSOC );
+			$location = $row['name'];	
+			echo'<p> Location name set as '. $location . ' based on your location name entry.';
+			insert_lost_record($dbc, $description, $location, $person, $room);
+			echo "<p>Added new item ". $description . ". Thank you.</p>" ; 	
+		}else if($results && $rowcount == 1 && $page == 'finder.php'){
+			$row = mysqli_fetch_array( $results , MYSQLI_ASSOC );
+			$location = $row['name'];	
+			echo'<p> Location name set as '. $location . ' based on your location name entry.';
+			insert_found_record($dbc, $description, $location, $person, $room);
+			echo "<p>Added new item ". $description . ". Thank you.</p>" ; 	
+		}else{
+			echo'<p style="color:red">Location name entered did not match anything in the database or you were not specific enough. Please try again.</p>';
+		}
+	}else{
+		echo '<p style="color:red">Location name was not long enough to identify a proper match in the database, please enter a longer name.</p>';
+	}
 }
 
 #Submits a claim for an item
@@ -506,6 +536,3 @@ function valid_string($string) {
 	 return true ;
 	}
 }
-#Perhaps in beta, validate the location input. Not very critical for what we're doing overall, but it would def. be nice.
-#Maybe like search for what they input in the locations table with a LIKE clause and if it returns false then bring up an error message, but otherwise, change the location to the matched search result.
-?>

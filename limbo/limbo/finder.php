@@ -1,25 +1,20 @@
 <!--
 This PHP script was modified based on result.php in McGrath (2012).
-It demonstrates how to ...
-  1) Connect to MySQL.
-  2) Write a complex query.
-  3) Format the results into an HTML table.
-  4) Update MySQL with form input.
 By Joseph Schmidt and Nick Titolo
 <!DOCTYPE html>
 <!-- Maybe a map of Marist on this page -->
 <!-- Allows a user to enter in a found item-->
 <html>
 <div class="row">
-      <div class="large-6 medium-6 columns">
-		<h2> Finders Page </h2>
+      <div class="large-5 medium-6 columns">
+		<h1> Finders Page </h1>
 		</div>
-	<div class="large-6 medium-6 columns">
+	<div class="large-7 medium-6 columns">
 	  <div class="callout panel">
-		<a href="limbo.php">Home&nbsp;</a>
-		<a href="owner.php">&nbsp;Lost Page&nbsp;</a>
-		<a href="ql.php">&nbsp;Quick Links&nbsp;</a>
-		<a href="login.php">&nbsp;Log in&nbsp;</a>
+		<a href="limbo.php" class="small button">Home&nbsp;</a>
+		<a href="owner.php" class="small button">&nbsp;Lost Page&nbsp;</a>
+		<a href="ql.php" class="small button">&nbsp;Quick Links&nbsp;</a>
+		<a href="login.php" class="small button">&nbsp;Log in&nbsp;</a>
 	  </div>
 	</div>
   </div>
@@ -40,6 +35,8 @@ require( 'includes/connectlimbo_db.php' ) ;
 # Includes these helper functions
 require( 'includes/limbohelpers.php' ) ;
 
+$page = 'finder.php';
+#fields that are entered and checked. the page variable works with check_location
 if ($_SERVER[ 'REQUEST_METHOD' ] == 'POST') {
 	if(isset($_POST['add'])){
 	$description = $_POST['description'] ;
@@ -51,10 +48,7 @@ if ($_SERVER[ 'REQUEST_METHOD' ] == 'POST') {
 	$room = $_POST['room'] ;
 
     if(!empty($description) && !empty($location_name) && !empty($findername) ){
-      $result = insert_found_record($dbc, $description, $location_name, $findername, $room) ;
-	  #show the item that was put in 
-	  #clear form inputs after they submit
-      echo "<p>Added " . $result . " new item ". $description . ". Thank you.</p>" ;
+      $result = check_location($dbc, $description, $location_name, $findername, $room, $page) ;
 	}else if (valid_string($description)== false && valid_string($location_name) == false && valid_string($findername) == false ){
 	  echo '<p style="color:red">Please input a description, location name, your name and a room (optional)!</p>' ;  
     }else if (valid_string($description)== false){
@@ -77,7 +71,6 @@ mysqli_close( $dbc ) ;
 ?>
 
 <!-- Get inputs from the user. -->
-<!-- HTML with embedded PHP. Method A, making presidents sticky. --> 
 <form action="finder.php" method="POST">
 <br>
 <table>
@@ -85,12 +78,8 @@ mysqli_close( $dbc ) ;
 <td>Description:</td><td><input type="text" name="description" value="<?php if (isset($_POST['description'])) echo $_POST['description']; ?> "> (Please be as descriptive as possible.)</td>
 </tr>
 <tr>
-<!-- This is going to probably be an option box instead. -->
 <td>Location Name:</td><td><input type="text" name="location" value="<?php if (isset($_POST['location_name'])) echo $_POST['location_name']; ?>"> (Please be as descriptive as possible.)
-<!--
-<select class="" id="locations"  name="locations">
-						   <?php echo implode("\n", $locations); ?>
-						   </select>--></td>
+</td>
 </tr>
 <tr>
 <td>Your Name:</td><td><input type="text" name="finder" value="<?php if (isset($_POST['finder'])) echo $_POST['finder']; ?>"></td>
@@ -99,7 +88,7 @@ mysqli_close( $dbc ) ;
 <td>*Room:</td><td><input type="text" name="room" value="<?php if (isset($_POST['room'])) echo $_POST['room']; ?>"></td>
 </tr>
 </table>
-<p><input type="submit" name="add" value="Add" ></p>
+<p><input type="submit" name="add" value="Add" class="small round button" ></p>
 <p>*Optional field</p>
 </form>
 			</div>

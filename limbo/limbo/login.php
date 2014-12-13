@@ -9,19 +9,19 @@ JS  12/03/2014  Modified
 <!DOCTYPE html>
 <head>
 <link href="cssfoundation/foundation.css" rel="stylesheet" type="text/css"/>
-<link rel="stylesheet" href="css/background.css" />
+<link href="css/background.css" rel="stylesheet" />
 </head>
 <html>
 <div class="row">
-      <div class="large-6 medium-6 columns">
+      <div class="large-5 medium-6 columns">
 	<h1>Log in</h1>
 	  </div>
-<div class="large-6 medium-6 columns">
+<div class="large-7 medium-6 columns">
 	  <div class="callout panel">
-		<a href="limbo.php">Home&nbsp;</a>
-		<a href="finder.php">Finder Page&nbsp;</a>
-		<a href="owner.php">&nbsp;Lost Page&nbsp;</a>
-		<a href="ql.php">&nbsp;Quick Links&nbsp;</a>
+		<a href="limbo.php" class="small button">Home&nbsp;</a>
+		<a href="finder.php" class="small button">Finder Page&nbsp;</a>
+		<a href="owner.php" class="small button">&nbsp;Lost Page&nbsp;</a>
+		<a href="ql.php" class="small button">&nbsp;Quick Links&nbsp;</a>
 	</div>
   </div>
 </div>
@@ -36,10 +36,8 @@ require( 'includes/connectlimbo_db.php' ) ;
 # Connect to MySQL server and the database
 require( 'includes/limbo_login_tools.php' ) ;
 
+#Validate login
 if ($_SERVER[ 'REQUEST_METHOD' ] == 'POST') {
-
-
-	//I should also hash somewhere eventually, so this can be more secure.
 	
 	$email = trim($_POST['email']) ;
 	
@@ -69,7 +67,7 @@ if ($_SERVER[ 'REQUEST_METHOD' ] == 'POST') {
 <td>Password:</td><td><input type="password" name="pass"></td>
 </tr>
 </table>
-<p><input type="submit" ></p>
+<p><input type="submit" class="small round button" ></p>
 		</div>
 	  </div>
 	</div>
